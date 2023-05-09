@@ -1,4 +1,3 @@
-![](./doc/logo-reparcar-std-400.webp)
 # Traefik Dockerized
 ![](./doc/traefik.png)
 - [Traefik Dockerized](#traefik-dockerized)
@@ -34,7 +33,7 @@ update your hosts:
 - osx: `nano /etc/hosts`
 - Linux (Debian based): `vim /etc/hosts`
 
-and add : `127.0.0.1       local.first-service.fr, local.second-service.fr, local.maildev-reparcar.fr, traefik.lh`
+and add : `127.0.0.1       local.first-service.fr, local.second-service.fr, local.thumbor.fr, local.maildev.fr, traefik.lh`
 
 Clone the repository:
 

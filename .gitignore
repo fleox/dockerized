@@ -2,5 +2,5 @@
 letsencrypt/
 !letsencrypt/.gitkeep
 docker-compose.override.yml
-config/jwt/
+#config/jwt/
 .idea/

@@ -1,0 +1,132 @@
+version: '3.7'
+
+services:
+  traefik:
+    image: traefik:2.5
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/traefik.yml:/traefik.yml
+      - ./letsencrypt/acme.json:/acme.json
+      - /var/run/docker.sock:/var/run/docker.sock
+    container_name: traefik # Remove if using multiple instances
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.sslresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.sslresolver.acme.httpchallenge.entrypoint=web"
+      #- "--certificatesresolvers.sslresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.sslresolver.acme.email=info@dataxu.io"
+      - "--certificatesresolvers.sslresolver.acme.storage=/letsencrypt/acme.json"
+    networks:
+      traefik:
+        aliases:
+          - local.first-service.fr
+          - local.second-service.fr
+      # Change if you're using another network
+    labels:
+      # Traefik configuration for the dashboard
+      # Remove the labels section if the dashboard is disabled
+      - traefik.http.routers.traefik-http.rule=Host(`traefik.lh`)
+      - traefik.http.routers.traefik-http.entrypoints=http
+      - traefik.http.routers.traefik-http.middlewares=redirect
+      - traefik.http.routers.traefik-https.rule=Host(`traefik.lh`)
+      - traefik.http.routers.traefik-https.entrypoints=https
+      - traefik.http.routers.traefik-https.tls=true
+      - traefik.http.routers.traefik-http.service=api@internal
+      - traefik.http.routers.traefik-https.service=api@internal
+      #- traefik.http.middlewares.redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.redirect.redirectscheme.scheme=http
+
+  maildev:
+    container_name: dockerize_maildev
+    image: maildev/maildev
+    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
+    restart: always
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.maildev.rule=Host(`local.maildev.fr`)"
+      - "traefik.http.routers.maildev.entrypoints=http"
+      - "traefik.http.services.maildev.loadbalancer.server.port=80"
+
+  thumbor:
+    container_name: dockerize_thumbor
+    image: minimalcompact/thumbor
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.thumbor.rule=Host(`local.thumbor.fr`)"
+      - "traefik.http.routers.thumbor.entrypoints=http"
+      - "traefik.http.services.thumbor.loadbalancer.server.port=80"
+
+  mariadb:
+    container_name: dockerize_mariadb
+    image: mariadb
+    depends_on:
+      - traefik
+    ports:
+      - "3317:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql:delegated
+      - ./docker/build/db/:/docker-entrypoint-initdb.d/:delegated
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: password
+    # Copy-pasted from https://github.com/docker-library/mariadb/issues/94
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "--silent" ]
+    networks:
+      - traefik
+
+  redis:
+    container_name: dockerize_redis
+    image: redis:3.2.10
+    networks:
+      - traefik
+    ports:
+      - 6379:6379
+
+  keycloak:
+    container_name: dockerize_keycloak
+    image: quay.io/keycloak/keycloak:16.1.1
+    restart: always
+    environment:
+      DB_VENDOR: mariadb
+      DB_ADDR: mariadb
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      #JGROUPS_DISCOVERY_PROTOCOL: JDBC_PING
+      #JDBC_PARAMS: "connectTimeout=30000"
+    depends_on:
+      - mariadb
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.keycloak.rule=Host(`local.services-reparcar.fr`) && PathPrefix(`/auth`)"
+      # - "traefik.http.routers.keycloak.tls=true"
+      - "traefik.http.routers.keycloak.entrypoints=http"
+      # - "traefik.http.routers.keycloak.tls.certresolver=https"
+      - "traefik.http.services.keycloak.loadbalancer.server.port=8080"
+
+networks:
+  # Change if you're using another network
+  traefik:
+    name: traefik
+
+volumes:
+  mysql_data:
+    driver: local
