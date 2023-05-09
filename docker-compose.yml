@@ -116,7 +116,7 @@ services:
       - traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.keycloak.rule=Host(`local.services-reparcar.fr`) && PathPrefix(`/auth`)"
+      - "traefik.http.routers.keycloak.rule=Host(`local.services-domain.fr`) && PathPrefix(`/auth`)"
       # - "traefik.http.routers.keycloak.tls=true"
       - "traefik.http.routers.keycloak.entrypoints=http"
       # - "traefik.http.routers.keycloak.tls.certresolver=https"

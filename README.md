@@ -28,7 +28,6 @@ This repository contains a template to deploy [Traefik 2](https://containo.us/tr
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
 - [Git](https://git-scm.com/)
-- Text editor of your choice (e.g. [Vim](https://www.vim.org/))
 
 ## Installation
 
@@ -36,7 +35,7 @@ update your hosts:
 - osx: `nano /etc/hosts`
 - Linux (Debian based): `vim /etc/hosts`
 
-and add : `127.0.0.1       local.first-service.fr, local.second-service.fr, local.thumbor.fr, local.maildev.fr, traefik.lh`
+and add : `127.0.0.1       local.services.fr, local.first-service.fr, local.second-service.fr, local.thumbor.fr, local.maildev.fr, traefik.lh`
 
 Clone the repository:
 
@@ -44,7 +43,21 @@ Clone the repository:
 $ docker-compose up -d
 ```
 
-go to http://traefik.lh
+## Local interfaces access
+
+- [Traefik interface](http://traefik.lh)
+- [MailDev interface](http://local.maildev.fr)
+- [Keycloak interface](http://local.services.fr)
+
+Redis
+```sh
+$ docker-compose exec redis bash
+$ redis-cli
+```
+
+MariaDb is in localhost:3317 with root:root
+
+## Advance Configuration
 
 ### Traefik Dashboard
 
@@ -75,7 +88,6 @@ To let _Traefik_ auto-discover the applications running as a Docker container on
 
 ```sh
 $ docker network create traefik
-ca0a9fe39b34b9f17d5c5e938e82ce67b4423e151ae5000eee7754e89116cac1
 ```
 
 1. Add the network to the configuration:
