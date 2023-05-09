@@ -1,5 +1,6 @@
 # Traefik Dockerized
 
+[Tuto create dev env with Docker and Traefik](https://medium.com/@fredericleaux/tuto-monter-un-environnement-de-dev-docker-avec-traefik-et-oauth2-pr%C3%AAt-pour-le-micro-service-12f78874d79c)
 Basic container for a dev environment under Docker with Traefik, MariaDb, Redis, Maildev, Thumbor and Keycloak
 
 ![](./doc/traefik.png)
