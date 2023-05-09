@@ -1,6 +1,6 @@
 # Traefik Dockerized
 
-Basic container for a dev environment under Docker with Traefick, MariaDb, Redis, Maildev, Thumbor and Keycloak
+Basic container for a dev environment under Docker with Traefik, MariaDb, Redis, Maildev, Thumbor and Keycloak
 
 ![](./doc/traefik.png)
 - [Traefik Dockerized](#traefik-dockerized)
