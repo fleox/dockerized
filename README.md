@@ -37,7 +37,7 @@ update your hosts:
 
 and add : `127.0.0.1       local.services.fr, local.first-service.fr, local.second-service.fr, local.thumbor.fr, local.maildev.fr, traefik.lh`
 
-Clone the repository:
+Clone the repository and run :
 
 ```sh
 $ docker-compose up -d
@@ -187,8 +187,6 @@ services:
       - ./:/var/www/project/:cached # Location of the project for php-fpm. Note this should be the same for NGINX.*
     networks:
       - internal # Docker containers (services) that need to connect to each other should be on the same network.
-    extra_hosts:
-      local.gateway-service.fr: 172.17.0.1
   nginx:
     build:
       context: ./docker

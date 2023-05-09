@@ -18,3 +18,11 @@ certificatesResolvers:
       storage: acme.json
       httpChallenge:
         entryPoint: http
+
+http:
+  routers:
+    api:
+      rule: Host(`local.services.fr`)
+      service: api@internal
+      middlewares:
+        - api-auth
