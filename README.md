@@ -1,4 +1,7 @@
 # Traefik Dockerized
+
+Basic container for a dev environment under Docker with Traefick, MariaDb, Redis, Maildev, Thumbor and Keycloak
+
 ![](./doc/traefik.png)
 - [Traefik Dockerized](#traefik-dockerized)
   - [Overview](#overview)
@@ -207,3 +210,5 @@ networks:
 - [Traefik Documentation](https://docs.traefik.io/)
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
+- [Mail dev](https://github.com/maildev/maildev)
+- [Thumbor](https://github.com/thumbor/thumbor)
