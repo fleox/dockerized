@@ -19,10 +19,6 @@
 
 ## Overview
 
-from https://github.com/cedrichopf/traefik-dockerized
-
-tuto https://dev.to/cedrichopf/get-started-with-traefik-2-using-docker-compose-35f9
-
 This repository contains a template to deploy [Traefik 2](https://containo.us/traefik/) using [Docker Compose](https://docs.docker.com/compose/) on a single machine running [Docker](https://www.docker.com/).
 
 ## Requirements
@@ -38,14 +34,11 @@ update your hosts:
 - osx: `nano /etc/hosts`
 - Linux (Debian based): `vim /etc/hosts`
 
-and add : `127.0.0.1       local.img-reparcar.fr, local.services-reparcar.fr, local.maildev-reparcar.fr, traefik.lh`
+and add : `127.0.0.1       local.first-service.fr, local.second-service.fr, local.maildev-reparcar.fr, traefik.lh`
 
 Clone the repository:
 
 ```sh
-$ git clone git@github.com:restarteco/traefik-dockerized.git
-Cloning into 'traefik-dockerized'...
-
 $ docker-compose up -d
 ```
 
@@ -181,7 +174,7 @@ services:
     networks:
       - internal # Docker containers (services) that need to connect to each other should be on the same network.
     extra_hosts:
-      local.gateway-reparcar.fr: 172.17.0.1
+      local.gateway-service.fr: 172.17.0.1
   nginx:
     build:
       context: ./docker

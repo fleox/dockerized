@@ -1,0 +1,6 @@
+!config/traefik.example.yml
+letsencrypt/
+!letsencrypt/.gitkeep
+docker-compose.override.yml
+config/jwt/
+.idea/
