@@ -28,6 +28,7 @@ services:
         aliases:
           - local.first-service.fr
           - local.second-service.fr
+          - local.services-domain.fr
       # Change if you're using another network
     labels:
       # Traefik configuration for the dashboard
