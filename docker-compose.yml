@@ -104,9 +104,11 @@ services:
         MINIO_ROOT_PASSWORD: secret1234
     volumes:
         - ./data/minio:/data
-    command: server /data --console-address ":9001"
+    command: server /data --console-address ":9001" --address ":9002"
+    networks:
+      - traefik
     ports:
-        - 9000:9000
+        - 9002:9000
         - 9001:9001
 
   keycloak:
