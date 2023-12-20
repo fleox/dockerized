@@ -97,6 +97,18 @@ services:
     ports:
       - 6379:6379
 
+  minio:
+    image: minio/minio
+    environment:
+        MINIO_ROOT_USER: access1234
+        MINIO_ROOT_PASSWORD: secret1234
+    volumes:
+        - ./data/minio:/data
+    command: server /data --console-address ":9001"
+    ports:
+        - 9000:9000
+        - 9001:9001
+
   keycloak:
     container_name: dockerize_keycloak
     image: quay.io/keycloak/keycloak:16.1.1
