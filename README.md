@@ -218,7 +218,7 @@ networks:
 ## MinIO
 S3-compliant Object Storage. Allows you to locally simulate an S3 compatible ObjectStorage server
 
-Let's log in to the admin interface http://127.0.0.1:9001/login with the credentials specified in docker-compose.yaml.
+
 
 ## Resources
 

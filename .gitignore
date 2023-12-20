@@ -5,3 +5,4 @@ docker-compose.override.yml
 #config/jwt/
 .idea/
 .DS_Store
+data/
