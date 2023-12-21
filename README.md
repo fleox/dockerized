@@ -36,7 +36,7 @@ update your hosts:
 - osx: `nano /etc/hosts`
 - Linux (Debian based): `vim /etc/hosts`
 
-and add : `127.0.0.1       local.services.fr, local.first-service.fr, local.second-service.fr, local.thumbor.fr, local.maildev.fr, traefik.lh`
+and add : `127.0.0.1       local.services.fr, local.first-service.fr, local.second-service.fr, local.thumbor.fr, local.maildev.fr, traefik.lh, local.minio.fr`
 
 Clone the repository and run :
 
@@ -218,6 +218,21 @@ networks:
 ## MinIO
 S3-compliant Object Storage. Allows you to locally simulate an S3 compatible ObjectStorage server
 
+- First login in minIO console http://127.0.0.1:9001 (log / pass in docker-compose.yml)
+- Create Access key and buckets
+
+```sh
+# run this command in  minIo container. This target mc to nimIO
+mc config host add dockerized-minio-1 http://127.0.0.1:9002 [key] [secret]
+
+# set public access to bucket files 
+mc anonymous set public dockerized-minio-1/[Bucket name]/
+
+# check 
+mc anonymous get dockerized-minio-1/[Bucket name]/
+```
+
+You can access files with http://local.minio.fr/[Bucket name]/[file name]
 
 
 ## Resources

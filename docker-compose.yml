@@ -108,8 +108,13 @@ services:
     networks:
       - traefik
     ports:
-        - 9002:9000
+        #- 9002:9000
         - 9001:9001
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.minio.rule=Host(`local.minio.fr`)"
+      - "traefik.http.routers.minio.entrypoints=http"
+      - "traefik.http.services.minio.loadbalancer.server.port=9002"
 
   keycloak:
     container_name: dockerize_keycloak
